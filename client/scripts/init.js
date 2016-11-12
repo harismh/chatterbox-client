@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  app.init();
+  app.superInit();
 
   $(document).on('click', '#submit-button', function(e) {
     e.preventDefault();
@@ -14,6 +14,11 @@ $(document).ready(function() {
   $(document).on('click', '.username', function(e) {
     console.log('clicked document .username');
     app.handleUsernameClick.call($(this));
+    $(this).parent().addClass('friend');
+  });
+
+  $('#room-list').change(function(e) { 
+    app.superRender($(this).val());
   });
 
   //Mocha Runner Specific

@@ -11,10 +11,13 @@ app.friends = {};
 app.server = 'https://api.parse.com/1/classes/messages';
 
 app.init = () => {
-  app.fetch();
-
   app.clearMessages();
+  app.fetch();
+};
 
+app.superInit = () => {
+  app.clearMessages();
+  app.superFetch();
 };
 
 app.createMessage = (username, text) => {
@@ -64,6 +67,32 @@ app.fetch = () => {
   });  
 };
 
+app.superFetch = () => {
+  $.ajax({
+    // This is the url you should use to communicate with the parse API server.
+    type: 'GET',
+    url: 'https://api.parse.com/1/classes/messages',
+    data: 'order=-createdAt',
+    success: function (data) {
+      console.log('chatterbox: Fetch successful');
+      var data = data.results;
+      app.data = data;
+      var rooms = {};
+      for (var i = 0; i < data.length; i++) {
+        app.renderMessage(data[i]);
+        rooms[data[i].roomname] = data[i].roomname;
+      }
+      for (var key in rooms) {
+        $('#room-list').append(`<option>${rooms[key]}</option>`);
+      }
+    },
+    error: function (data) {
+      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+      console.error('chatterbox: Fetch failed', data);
+    }
+  }); 
+};
+
 app.clearMessages = () => {
   $('#chats').html('');
 };
@@ -87,6 +116,14 @@ app.renderMessage = (message) => {
 app.renderRoom = (string) => {
   //$('#roomSelect').children().replaceWith(`<div id=${string}></div>`);
   $('#roomSelect').append(`<div id=${string}></div>`);
+};
+
+app.superRender = (str) => {
+  app.clearMessages();
+  var data = app.data.filter( message => message.roomname === str);
+  for (var i = 0; i < data.length; i++) {
+    app.renderMessage(data[i]);
+  }
 };
 
 app.handleUsernameClick = function() {
