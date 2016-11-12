@@ -22,16 +22,21 @@
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/init.js"></script>
-  </head>
+</head>
   <body>
-    <div id="main">
+    <div id="app">
+      <div class="username"></div>
       <h1>chatterbox</h1>
+      <button id="refresh-button">Refresh</button>
       <!-- Your HTML goes here! -->
-      <select id="room-select" room="dropdown">
-      </select>
+      <!-- <select id="room-list" room="dropdown">
+      </select> -->
+      <div id="roomSelect">
+        <!-- <div id="lobby"></div> -->
+      </div>
       <form>
         <textarea id="message-form" cols=75% rows=10></textarea>
-        <input id="submit-button" type="submit" value="Confirm">
+        <input id="submit-button" class="submit" type="submit" value="Confirm">
       </form>
     </div>
     <div id="chats"></div>
